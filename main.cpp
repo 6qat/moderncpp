@@ -1,17 +1,14 @@
-#include <cstdlib>
 #include <iostream>
 #include <set>
 #include <string>
-#include <iterator>
 #include <map>
 
 #include <tuple>
 #include <memory>
-#include <chrono>
-#include <string>
 #include <cmath>
 #include <random>
 #include "random.hpp"
+//#include <boost/chrono.hpp>
 
 // {
 struct S {
@@ -94,18 +91,18 @@ int main() {
     //=======================================================================================
 
     auto rand = get_random_number(1.0, 100.0);
-    std::cout << "Random number: " << rand << std::endl;
+    auto rand2 = get_random_number(1.0, 100.0);
+    std::cout << "Random number: " << rand <<  " " << rand2 << std::endl;
     std::cout << "Square root: " << std::sqrt(static_cast<float>(rand)) << std::endl;
 
     auto *r = new backoff_time_t();
-    std::cout << "Random number 2: " << r->rand() << " " << r->rand() << std::endl;
+    std::cout << "Random number 2: " << r->rand() << " " << r->rand()  << " " << r->rand() << std::endl;
 
     // get base random alias which is auto seeded and has static API and internal state
     using Random = effolkronium::random_static;
-    auto val = Random::get<Random::common>(1, 10);
     std::cout << "Random number 3: "
-              << Random::get<Random::common>(1., 100) << " "
-              << Random::get<Random::common>(1, 100.) << std::endl;
+              << Random::get<Random::common>(1, 100) << " "
+              << Random::get<Random::common>(1, 100) << std::endl;
     //=======================================================================================
 
     std::set<S> mySet;
