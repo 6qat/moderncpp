@@ -6,7 +6,8 @@
 #include <tuple>
 #include <memory>
 #include <cmath>
-#include <random>
+#include <boost/random/random_device.hpp>
+#include <boost/random.hpp>
 #include "random.hpp"
 //#include <boost/chrono.hpp>
 
@@ -39,7 +40,7 @@ auto SumCpp11() {
 
 // old way
 template<typename T1, typename... T>
-auto SumCpp11(T1 s, T... ts) {
+auto SumCpp11(T1 s, T... ts) -> T1 {
     return s + SumCpp11(ts...);
 }
 
@@ -56,13 +57,24 @@ auto sum2(Args ...args) {
     return (args + ...);
 }
 
+[[maybe_unused]] auto soma(int a, int b) -> int {
+    return a + b;
+}
+
 template<class T>
-T get_random_number(T a, T b) {
-    std::random_device generator{std::to_string(time(nullptr))};
-    std::mt19937_64 engine(generator());
-    std::uniform_real_distribution<double> dist{a, b};
-    auto random_number = dist(engine);
-    return random_number;
+auto get_random_number(T a, T b) -> T {
+
+    boost::random::random_device rd;
+    boost::random::mt19937 gen{rd()};
+    //boost::random::uniform_real_distribution<> dist{a, b};
+    boost::random::uniform_int_distribution<> dist{a, b};
+    return dist(gen);
+
+//    std::random_device generator{std::to_string(time(nullptr))};
+//    std::mt19937_64 engine(generator());
+//    std::uniform_real_distribution<double> dist{a, b};
+//    auto random_number = dist(engine);
+//    return random_number;
     //return (random_number % 2 == 0) ? random_number : -1;
 }
 
@@ -79,10 +91,11 @@ public:
     }
 };
 
-int main() {
+auto main() -> int {
 
     using namespace std::literals::chrono_literals;
     using namespace std::literals::string_literals;
+
     auto s = "Testing ...."s;
     //auto dur = 1h + 2min + 3s + 4ms + 5us + 6ns;
     auto dur = 6ns + 5us;
@@ -90,13 +103,13 @@ int main() {
 
     //=======================================================================================
 
-    auto rand = get_random_number(1.0, 100.0);
-    auto rand2 = get_random_number(1.0, 100.0);
-    std::cout << "Random number: " << rand <<  " " << rand2 << std::endl;
+    auto rand = get_random_number(1, 100);
+    auto rand2 = get_random_number(1, 100);
+    std::cout << "Random number: " << rand << " " << rand2 << std::endl;
     std::cout << "Square root: " << std::sqrt(static_cast<float>(rand)) << std::endl;
 
     auto *r = new backoff_time_t();
-    std::cout << "Random number 2: " << r->rand() << " " << r->rand()  << " " << r->rand() << std::endl;
+    std::cout << "Random number 2: " << r->rand() << " " << r->rand() << " " << r->rand() << std::endl;
 
     // get base random alias which is auto seeded and has static API and internal state
     using Random = effolkronium::random_static;

@@ -31,8 +31,8 @@ SOFTWARE.
 #ifndef EFFOLKRONIUM_RANDOM_HPP
 #define EFFOLKRONIUM_RANDOM_HPP
 
-#include <boost/random.hpp>
-#include <boost/chrono.hpp> // timed seed
+#include <random>
+#include <chrono> // timed seed
 #include <type_traits>
 #include <cassert>
 #include <initializer_list>
@@ -54,31 +54,34 @@ namespace effolkronium {
         template<typename T>
         struct is_uniform_int {
             static constexpr bool value =
-                    std::is_same<T, short>::value
-                    || std::is_same<T, int>::value
-                    || std::is_same<T, long>::value
-                    || std::is_same<T, long long>::value
-                    || std::is_same<T, unsigned short>::value
-                    || std::is_same<T, unsigned int>::value
-                    || std::is_same<T, unsigned long>::value
-                    || std::is_same<T, unsigned long long>::value;
+                    std::is_same < T,
+            short>::value
+            || std::is_same<T, int>::value
+            || std::is_same<T, long>::value
+            || std::is_same<T, long long>::value
+            || std::is_same<T, unsigned short>::value
+            || std::is_same<T, unsigned int>::value
+            || std::is_same<T, unsigned long>::value
+            || std::is_same<T, unsigned long long>::value;
         };
 
         /// True if type T is applicable by a std::uniform_real_distribution
         template<typename T>
         struct is_uniform_real {
             static constexpr bool value =
-                    std::is_same<T, float>::value
-                    || std::is_same<T, double>::value
-                    || std::is_same<T, long double>::value;
+                    std::is_same < T,
+            float>::value
+            || std::is_same<T, double>::value
+            || std::is_same<T, long double>::value;
         };
 
         /// True if type T is plain byte
         template<typename T>
         struct is_byte {
             static constexpr bool value =
-                    std::is_same<T, signed char>::value
-                    || std::is_same<T, unsigned char>::value;
+                    std::is_same < T,
+            signed char>::value
+            || std::is_same<T, unsigned char>::value;
         };
 
         /// True if type T is plain number type
@@ -94,10 +97,11 @@ namespace effolkronium {
         template<typename T>
         struct is_supported_character {
             static constexpr bool value =
-                    std::is_same<T, char>::value
-                    || std::is_same<T, wchar_t>::value
-                    || std::is_same<T, char16_t>::value
-                    || std::is_same<T, char32_t>::value;
+                    std::is_same < T,
+            char>::value
+            || std::is_same<T, wchar_t>::value
+            || std::is_same<T, char16_t>::value
+            || std::is_same<T, char32_t>::value;
         };
 
         /// True if type T is iterator
@@ -116,8 +120,9 @@ namespace effolkronium {
             static long test(U &&);
 
         public:
-            static constexpr bool value = std::is_same<
-                    decltype(test(std::declval<T>())), long>::value;
+            static constexpr bool value = std::is_same <
+                                          decltype(test(std::declval<T>())),
+            long>::value;
         };
 
     } // namespace details
@@ -352,11 +357,15 @@ namespace effolkronium {
                 typename C = typename std::common_type<A, B>::type
         >
         static typename std::enable_if<
-                std::is_same<Key, common>::value
-                && details::is_supported_number<A>::value
-                && details::is_supported_number<B>::value
-                // Prevent implicit type conversion from singed to unsigned types
-                && std::is_signed<A>::value != std::is_unsigned<B>::value, C>::type
+                std::is_same < Key, common>::value
+                &&details::is_supported_number<A>::value
+        &&
+        details::is_supported_number<B>::value
+        // Prevent implicit type conversion from singed to unsigned types
+        &&std::is_signed<A>::value
+        != std::is_unsigned<B>::value, C>
+
+        ::type
         get(A from = std::numeric_limits<A>::min(),
             B to = std::numeric_limits<B>::max()) {
             return get(static_cast<C>( from ), static_cast<C>( to ));
@@ -727,11 +736,15 @@ namespace effolkronium {
                 typename C = typename std::common_type<A, B>::type
         >
         static typename std::enable_if<
-                std::is_same<Key, common>::value
-                && details::is_supported_number<A>::value
-                && details::is_supported_number<B>::value
-                // Prevent implicit type conversion from singed to unsigned types
-                && std::is_signed<A>::value != std::is_unsigned<B>::value, C>::type
+                std::is_same < Key, common>::value
+                &&details::is_supported_number<A>::value
+        &&
+        details::is_supported_number<B>::value
+        // Prevent implicit type conversion from singed to unsigned types
+        &&std::is_signed<A>::value
+        != std::is_unsigned<B>::value, C>
+
+        ::type
         get(A from = std::numeric_limits<A>::min(),
             B to = std::numeric_limits<B>::max()) {
             return get(static_cast<C>( from ), static_cast<C>( to ));
@@ -1098,11 +1111,15 @@ namespace effolkronium {
                 typename C = typename std::common_type<A, B>::type
         >
         typename std::enable_if<
-                std::is_same<Key, common>::value
-                && details::is_supported_number<A>::value
-                && details::is_supported_number<B>::value
-                // Prevent implicit type conversion from singed to unsigned types
-                && std::is_signed<A>::value != std::is_unsigned<B>::value, C>::type
+                std::is_same < Key, common>::value
+                &&details::is_supported_number<A>::value
+        &&
+        details::is_supported_number<B>::value
+        // Prevent implicit type conversion from singed to unsigned types
+        &&std::is_signed<A>::value
+        != std::is_unsigned<B>::value, C>
+
+        ::type
         get(A from = std::numeric_limits<A>::min(),
             B to = std::numeric_limits<B>::max()) {
             return get(static_cast<C>( from ), static_cast<C>( to ));
