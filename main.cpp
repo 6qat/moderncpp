@@ -9,7 +9,27 @@
 #include <boost/random/random_device.hpp>
 #include <boost/random.hpp>
 #include "random.hpp"
-//#include <boost/chrono.hpp>
+
+#include <array>
+
+// https://en.cppreference.com/w/cpp/container/array
+auto makeArray() {
+    std::array<int, 4> a0 = {1, 2, 3, 4};
+    std::array<int, 3> a1{1,
+                          2,
+                          3};
+    std::array<std::string, 2> a3 = {std::string("a"), "b"};
+    std::sort(a1.begin(), a1.end());
+    std::reverse_copy(a1.begin(),
+                      a1.end(),
+                      std::ostream_iterator<int>(std::cout, " "));
+    std::cout << '\n';
+
+    // ranged for loop is supported
+    for(const auto& s: a3)
+        std::cout << s << ' ';
+
+}
 
 // {
 struct S {
@@ -64,6 +84,7 @@ auto sum2(Args ...args) {
 template<class T>
 auto get_random_number(T a, T b) -> T {
 
+
     boost::random::random_device rd;
     boost::random::mt19937 gen{rd()};
     //boost::random::uniform_real_distribution<> dist{a, b};
@@ -91,7 +112,32 @@ public:
     }
 };
 
+template<typename T>
+auto &f(T &t) {
+    return t;
+}
+
+//// `T` is not limited by any constraints.
+//template <typename T>
+//concept always_satisfied = true;
+
+
 auto main() -> int {
+
+    std::array<int, 3> aa = {1,
+                             2,
+                             3};
+    std::cout << aa.size() << " " << aa.max_size();
+
+    struct A {
+        int i;
+        int j;
+    };
+    auto p = std::make_unique<A>(A{.i = 1, .j = 10});
+
+    const int ci = 10;
+    decltype(auto) ca = ci;
+    std::cout << ca << std::endl;
 
     using namespace std::literals::chrono_literals;
     using namespace std::literals::string_literals;
@@ -103,8 +149,8 @@ auto main() -> int {
 
     //=======================================================================================
 
-    auto rand = get_random_number(1, 100);
-    auto rand2 = get_random_number(1, 100);
+    const auto rand = get_random_number(1, 100);
+    const auto rand2 = get_random_number(1, 100);
     std::cout << "Random number: " << rand << " " << rand2 << std::endl;
     std::cout << "Square root: " << std::sqrt(static_cast<float>(rand)) << std::endl;
 
@@ -122,7 +168,7 @@ auto main() -> int {
 
     // pre C++17:
     {
-        S value{42, "Test", 3.14};
+        const S value{42, "Test", 3.14};
         std::set<S>::iterator iter;
         bool inserted;
 
@@ -151,7 +197,7 @@ auto main() -> int {
         int x1: 2;
         volatile double y1;
     };
-    S2 myStruct{1, 3.3};
+    const S2 myStruct{1, 3.3};
     const auto[x, y] = myStruct;
 
     std::cout << x << " " << y;
