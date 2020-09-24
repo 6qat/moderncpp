@@ -11,6 +11,7 @@
 #include "random.hpp"
 
 #include <array>
+#include <ranges>
 
 // https://en.cppreference.com/w/cpp/container/array
 auto makeArray() {
@@ -99,19 +100,6 @@ auto get_random_number(T a, T b) -> T {
     //return (random_number % 2 == 0) ? random_number : -1;
 }
 
-class backoff_time_t {
-public:
-    std::random_device rd;
-    std::mt19937_64 mt;
-    std::uniform_real_distribution<double> dist;
-
-    backoff_time_t() : rd{std::to_string(time(nullptr))}, mt{rd()}, dist{1.0, 100.0} {}
-
-    double rand() {
-        return dist(mt);
-    }
-};
-
 template<typename T>
 auto &f(T &t) {
     return t;
@@ -153,9 +141,6 @@ auto main() -> int {
     const auto rand2 = get_random_number(1, 100);
     std::cout << "Random number: " << rand << " " << rand2 << std::endl;
     std::cout << "Square root: " << std::sqrt(static_cast<float>(rand)) << std::endl;
-
-    auto *r = new backoff_time_t();
-    std::cout << "Random number 2: " << r->rand() << " " << r->rand() << " " << r->rand() << std::endl;
 
     // get base random alias which is auto seeded and has static API and internal state
     using Random = effolkronium::random_static;
@@ -222,6 +207,16 @@ auto main() -> int {
     int i = 9;
     std::cout << get_value(pi.get()) << "\n";
     std::cout << get_value(i) << "\n";
+
+    // ==================================================================
+
+	std::vector<int> ints{0,1,2,3,4,5};
+	auto even = [](int i){ return 0 == i % 2; };
+	auto square = [](int i) { return i * i; };
+
+	for (int ii : ints | std::views::filter(even) | std::views::transform(square)) {
+		std::cout << ii << ' ';
+	}
 
 }
 
