@@ -11,8 +11,10 @@ add_executable(moderncpp main.cpp random.hpp)
 target_include_directories(moderncpp PRIVATE ${Boost_INCLUDE_DIRS})
 target_link_libraries(moderncpp ${Boost_LIBRARIES})
 
-add_executable(poc pattern-open-close.cpp)
+add_executable(c-poc creational-poc.cpp)
 add_executable(c-lsp creational-lsp.cpp)
+add_executable(c-isp creational-isp.cpp)
+add_executable(c-dip creational-dip.cpp)
 
 if(Boost_Found)
 
