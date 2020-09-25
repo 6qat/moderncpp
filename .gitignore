@@ -3,3 +3,5 @@
 .vs/**
 out/
 cmake**/
+.vscode/
+build/
