@@ -19,6 +19,9 @@ add_executable(c-lsp creational-lsp.cpp)
 add_executable(c-isp creational-isp.cpp)
 add_executable(c-dip creational-dip.cpp)
 
+add_executable(constr constructors.cpp)
+target_include_directories(constr PRIVATE ${Boost_INCLUDE_DIRS} )
+
 add_executable(rx rx.cpp)
 target_include_directories(rx PRIVATE ${rxcpp_INCLUDE_DIRS})
 target_link_libraries(rx pthread)
