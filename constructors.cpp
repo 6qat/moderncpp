@@ -3,6 +3,7 @@
 //
 #include <iostream>
 #include <vector>
+#include <array>
 #include <boost/container/vector.hpp>
 
 using namespace std;
@@ -32,9 +33,10 @@ struct Foo {
 		cout << "Move Constructor Foo(Foo&& other) called" << endl;
 	}
 
-	Foo& operator=(const Foo& other)= default;
+	Foo& operator=(const Foo& other) = default;
 
-	Foo& operator=(Foo&& other) noexcept {
+	Foo& operator=(Foo&& other) noexcept
+	{
 		this->a = other.a;
 		this->b = other.b;
 		other.a = 0;
@@ -57,8 +59,12 @@ auto main() -> int
 	auto f4 = std::move(f3);
 	cout << f4.a << endl;
 
+	cout << "Vector:" << endl;
 	auto v = boost::container::vector<Foo>{ f0, f1, f2 };
 //	auto v = vector<Foo>{ std::move(f0), std::move(f1), std::move(f2) };
+
+	cout << "Array:" << endl;
+	auto a = std::array<Foo, 3>{ f0, f1, f2 };
 
 	cout << "END" << endl;
 
