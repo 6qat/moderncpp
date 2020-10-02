@@ -61,7 +61,11 @@ auto main() -> int
 
 	cout << "Vector:" << endl;
 	auto v = boost::container::vector<Foo>{ f0, f1, f2 };
+	v.push_back(f4);
+	v.push_back(f4);
 //	auto v = vector<Foo>{ std::move(f0), std::move(f1), std::move(f2) };
+
+
 
 	cout << "Array:" << endl;
 	auto a = std::array<Foo, 3>{ f0, f1, f2 };
