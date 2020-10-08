@@ -18,5 +18,6 @@ auto main() -> int
 	cout << "From main thread: " << std::this_thread::get_id() << endl;
 	auto t = std::jthread(hello);
 	t.join();
+	cout << t.joinable() << endl;
 	return 0;
 }

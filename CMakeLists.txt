@@ -25,6 +25,9 @@ target_include_directories(constr PRIVATE ${Boost_INCLUDE_DIRS} )
 add_executable(threads threads.cpp)
 target_link_libraries(threads pthread)
 
+add_executable(p_task packaged_task.cpp)
+target_link_libraries(p_task pthread)
+
 add_executable(rx rx.cpp)
 target_include_directories(rx PRIVATE ${rxcpp_INCLUDE_DIRS})
 target_link_libraries(rx pthread)
